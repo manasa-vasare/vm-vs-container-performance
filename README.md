@@ -4,21 +4,57 @@
 This project evaluates and compares the performance characteristics of Virtual Machines (VMs) and Containers. By running a series of CPU, memory, disk I/O, and network benchmarks, we aim to quantify the overhead introduced by each virtualization technology.
 
 ## Objectives
+To experimentally compare the performance, resource utilization, application performance, and scalability of Virtual Machines (VMs) and Containers under identical workloads.
 
 ## Research Questions
 
 ## Experimental Environment
-The experiments were conducted on a VMware Virtual Machine with the following specifications:
-- **CPU**: 4 vCPUs
-- **Memory**: 8 GB RAM
-- **Virtual Disk**: 60 GB
-- **Guest OS**: Ubuntu 24.04 LTS (Kernel 7.0.0-34-generic)
+The experiments were conducted in two distinct environments running the same workloads to ensure a meaningful comparison.
 
 ## Hardware Configuration
+**Virtual Machine (VMware Workstation)**
+- **vCPU**: 4 virtual CPUs
+- **Memory**: 8 GB RAM
+- **Virtual Disk**: 60 GB
+- **Network**: NAT
+
+**Container (Docker)**
+- **CPU Limit**: 4 CPUs
+- **Memory Limit**: 8 GB
+- **Storage**: Dedicated benchmark directory mounted into the container
 
 ## Software Configuration
+- **Host OS**: Windows
+- **Hypervisor**: VMware Workstation
+- **Guest OS**: Ubuntu 24.04 LTS (Kernel 7.0.0-34-generic)
+- **Container**: Docker (Base Image: ubuntu:24.04)
+- **Programming / Analysis**: Python, Pandas, Matplotlib
+- **Benchmarking Tools**: Sysbench (CPU & Memory), fio (Disk I/O), iperf3 (Network)
+- **Application**: FastAPI, Uvicorn
 
 ## Architecture
+```text
+         PERFORMANCE ANALYSIS
+                  │
+      ┌───────────┴───────────┐
+      │                       │
+   VIRTUAL                CONTAINER
+   MACHINE                 Docker
+      │                       │
+      └───────────┬───────────┘
+                  │
+            SAME WORKLOADS
+                  │
+      ┌───────────┼───────────┐
+      ▼           ▼           ▼
+     CPU        Memory  Disk / Network
+                  │
+                  ▼
+          APPLICATION TEST
+                  │
+                  ▼
+            FINAL ANALYSIS
+```
 
 ## Methodology
 
