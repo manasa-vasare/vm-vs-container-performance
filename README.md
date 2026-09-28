@@ -42,6 +42,34 @@ Scripts are provided to process the raw output and generate visualizations:
 Plots are output to `results/figures/`.
 
 ## Memory Experiment
+We utilized `sysbench` to measure memory performance by transferring a total of 10G using 1M block sizes. The test was run 10 times for both environments to compute a reliable average.
+
+**Benchmark command:**
+```bash
+sysbench memory \
+  --memory-block-size=1M \
+  --memory-total-size=10G \
+  --threads=4 \
+  run
+```
+
+**Memory Throughput (MiB/s)**
+
+| Run | VM | Container |
+|-----|-----------|-----------|
+| 1 | 24339.39 | 14483.00 |
+| 2 | 25654.44 | 16959.34 |
+| 3 | 24953.24 | 15297.17 |
+| 4 | 25861.86 | 16355.80 |
+| 5 | 26523.01 | 16627.22 |
+| 6 | 24754.42 | 15460.75 |
+| 7 | 24602.94 | 16431.35 |
+| 8 | 23799.61 | 16186.24 |
+| 9 | 25512.58 | 16509.75 |
+| 10 | 25389.45 | 16214.04 |
+| **Average** | **25139.094** | **16052.47** |
+
+*Analysis*: The VM achieved an average memory throughput of 25139.094 MiB/s, while the Container averaged 16052.47 MiB/s. In this test, the Container's memory throughput was approximately 36.15% lower than that of the VM.
 
 ## Disk I/O Experiment
 
