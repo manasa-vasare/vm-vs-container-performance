@@ -108,6 +108,18 @@ sysbench memory \
 *Analysis*: The VM achieved an average memory throughput of 25139.094 MiB/s, while the Container averaged 16052.47 MiB/s. In this test, the Container's memory throughput was approximately 36.15% lower than that of the VM.
 
 ## Disk I/O Experiment
+We utilized `fio` to measure storage performance by testing sequential and random read/write workloads against a 2G test file. This tests the overhead introduced by virtualization and container storage layers under different access patterns.
+
+**Disk Throughput**
+
+| Test | VM | Container |
+|------|----|-----------|
+| Sequential Write | 99.0 MiB/s | 84.8 MiB/s |
+| Sequential Read | 191 MiB/s | 921 MiB/s |
+| Random Read | 3406 KiB/s | 13.7 MiB/s |
+| Random Write | 3645 KiB/s | 13.3 MiB/s |
+
+*Analysis*: The VM performed slightly better than the Container in the Sequential Write test (99.0 MiB/s vs 84.8 MiB/s). However, the Container significantly outperformed the VM across all other workloads, achieving over four times the throughput in Sequential Read and substantially higher performance in both Random Read and Random Write operations (which were measured in MiB/s for the Container compared to KiB/s for the VM).
 
 ## Network Experiment
 
