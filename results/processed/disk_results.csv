@@ -1,0 +1,9 @@
+test_type,environment,throughput_mib_s
+Sequential Write,VM,99.0
+Sequential Write,Container,84.8
+Sequential Read,VM,191.0
+Sequential Read,Container,921.0
+Random Read,VM,3.32
+Random Read,Container,13.7
+Random Write,VM,3.56
+Random Write,Container,13.3
