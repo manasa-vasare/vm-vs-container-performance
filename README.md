@@ -6,8 +6,6 @@ This project evaluates and compares the performance characteristics of Virtual M
 ## Objectives
 To experimentally compare the performance, resource utilization, application performance, and scalability of Virtual Machines (VMs) and Containers under identical workloads.
 
-## Research Questions
-
 ## Experimental Environment
 The experiments were conducted in two distinct environments running the same workloads to ensure a meaningful comparison.
 
@@ -55,8 +53,6 @@ The experiments were conducted in two distinct environments running the same wor
                   ▼
             FINAL ANALYSIS
 ```
-
-## Methodology
 
 ## CPU Experiment
 We utilized `sysbench` to measure CPU performance by calculating primes up to 20,000. Tests were executed with 1, 2, 4, and 8 threads. 
