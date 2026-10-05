@@ -68,6 +68,9 @@ We utilized `sysbench` to measure CPU performance by calculating primes up to 20
 
 *Analysis*: In this specific configuration, the VM environment consistently outperformed the container environment in raw CPU throughput. Both environments scaled well up to 4 threads, at which point performance plateaued because the host VM is limited to 4 vCPUs.
 
+![CPU Scalability](results/figures/cpu_scalability.png)
+![CPU Performance](results/figures/cpu_performance.png)
+
 Scripts are provided to process the raw output and generate visualizations:
 - `scripts/analyze_results.py`: Computes average CPU performance across environments.
 - `scripts/generate_plots.py`: Generates line charts comparing scalability (Threads vs Events per Second).
@@ -103,6 +106,8 @@ sysbench memory \
 
 *Analysis*: The VM achieved an average memory throughput of 25139.094 MiB/s, while the Container averaged 16052.47 MiB/s. In this test, the Container's memory throughput was approximately 36.15% lower than that of the VM.
 
+![Memory Performance](results/figures/memory_performance.png)
+
 ## Disk I/O Experiment
 We utilized `fio` to measure storage performance by testing sequential and random read/write workloads against a 2G test file. This tests the overhead introduced by virtualization and container storage layers under different access patterns.
 
@@ -116,6 +121,8 @@ We utilized `fio` to measure storage performance by testing sequential and rando
 | Random Write | 3645 KiB/s | 13.3 MiB/s |
 
 *Analysis*: The VM performed slightly better than the Container in the Sequential Write test (99.0 MiB/s vs 84.8 MiB/s). However, the Container significantly outperformed the VM across all other workloads, achieving over four times the throughput in Sequential Read and substantially higher performance in both Random Read and Random Write operations (which were measured in MiB/s for the Container compared to KiB/s for the VM).
+
+![Disk Performance](results/figures/disk_performance.png)
 
 ## Network Experiment
 We used `iperf3` to measure the network throughput between a client and a server for 30 seconds. This tests the overhead of the networking stack (NAT/Bridge) in both environments.
