@@ -122,6 +122,16 @@ We utilized `fio` to measure storage performance by testing sequential and rando
 *Analysis*: The VM performed slightly better than the Container in the Sequential Write test (99.0 MiB/s vs 84.8 MiB/s). However, the Container significantly outperformed the VM across all other workloads, achieving over four times the throughput in Sequential Read and substantially higher performance in both Random Read and Random Write operations (which were measured in MiB/s for the Container compared to KiB/s for the VM).
 
 ## Network Experiment
+We used `iperf3` to measure the network throughput between a client and a server for 30 seconds. This tests the overhead of the networking stack (NAT/Bridge) in both environments.
+
+**Network Throughput (Gbits/sec)**
+
+| Test | VM | Container |
+|------|----|-----------|
+| Single Stream (`-t 30`) | 12.0 Gbits/sec | *Pending* |
+| Multi-Stream 4 (`-P 4`) | 28.2 Gbits/sec | *Pending* |
+
+*Analysis*: The VM achieves a baseline of 12.0 Gbits/sec for a single stream and scales to 28.2 Gbits/sec when using 4 parallel streams. We still need to run the Docker container network tests to compare the overhead.
 
 ## Application Experiment
 The project also includes a FastAPI application (`api/main.py`) which exposes `/compute`, `/memory`, and `/health` endpoints to test real-world application performance in both environments.
