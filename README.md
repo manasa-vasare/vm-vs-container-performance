@@ -134,24 +134,43 @@ We used `iperf3` to measure the network throughput between a client and a server
 *Analysis*: The VM achieves a baseline of 12.0 Gbits/sec for a single stream and scales to 28.2 Gbits/sec when using 4 parallel streams. We still need to run the Docker container network tests to compare the overhead.
 
 ## Application Experiment
-The project also includes a FastAPI application (`api/main.py`) which exposes `/compute`, `/memory`, and `/health` endpoints to test real-world application performance in both environments.
-
-## Startup-Time Experiment
+The project includes a FastAPI application (`api/main.py`) to test real-world application performance. 
 
 ## Scalability Experiment
+We used `wrk` to measure the API's ability to scale under increasing concurrent connections (simulating higher load). Below is the baseline performance for the VM environment:
 
-## Results
+**VM API Scalability (Requests per second)**
+| Connections (Threads) | Requests/sec | Avg Latency |
+|-----------------------|--------------|-------------|
+| 10 (1 Thread)         | 516.30       | 19.46ms     |
+| 50 (2 Threads)        | 481.44       | 103.54ms    |
+| 100 (3 Threads)       | 460.41       | 217.14ms    |
+| 200 (4 Threads)       | 282.96       | 481.99ms    |
 
-## Statistical Analysis
+*Analysis*: The VM serves requests very quickly at lower concurrencies but begins to struggle and drop requests/sec significantly as concurrent connections approach 200, causing latency to spike to almost half a second.
 
-## VM vs Container Comparison
+## Final Comparison Table
 
-## Discussion
-
-## Limitations
+| Metric | VM | Container | Difference (Container vs VM) |
+|--------|----|-----------|------------------------------|
+| **CPU Performance (4 threads)** | 1027.19 eps | 787.52 eps | Container is ~23% slower |
+| **Memory Throughput** | 25139 MiB/s | 16052 MiB/s | Container is ~36% slower |
+| **Sequential Read (Disk)** | 191 MiB/s | 921 MiB/s | **Container is ~4.8x faster** |
+| **Random Read (Disk)** | 3.32 MiB/s | 13.7 MiB/s | **Container is ~4.1x faster** |
+| **Network Throughput** | 12.0 Gbits/sec | *Pending* | N/A |
+| **API Scalability (10 Conns)** | 516 Req/sec | *Pending* | N/A |
 
 ## Conclusion
+Based on our measured experimental data, there is no single "best" environment—the optimal choice depends strictly on the workload:
+1. **Compute & Memory Bound Workloads**: The Virtual Machine (VMware) provided significantly higher raw CPU throughput and Memory bandwidth in our tests. Applications requiring heavy mathematical processing or large in-memory caches may perform better on the VM.
+2. **Storage Bound Workloads**: The Docker Container vastly outperformed the VM in Disk I/O operations, specifically in read throughput (both sequential and random). Microservices or databases that are heavily disk-bound would benefit significantly from the container environment.
 
 ## Future Work
+- Complete the Network and Scalability load tests for the Docker container.
+- Measure and compare the cold-startup times of both environments.
+- Automate the generation of the final comparison table using Pandas.
 
 ## Reproduction Instructions
+1. Clone this repository: `git clone https://github.com/manasa-vasare/vm-vs-container-performance.git`
+2. Run the automated bash scripts located in the `scripts/` directory to generate raw data.
+3. Run `python scripts/generate_memory_disk_plots.py` to process the data and build graphs.
